@@ -24,22 +24,30 @@ export default function App() {
 }
 
 function Accordion() {
+  const [curOpen, setCurOpen] = useState(null);
+
   return (
     <ul className="accordion">
       {faqs.map((item, i) => (
-        <Question number={i + 1} faq={item} />
+        <Question
+          curOpen={curOpen}
+          onSetCurOpen={setCurOpen}
+          number={i + 1}
+          faq={item}
+        />
       ))}
     </ul>
   );
 }
 
-function Question({ faq, number }) {
-  const [isOpen, setIsOpen] = useState(false);
-  function handleisOpen() {
-    setIsOpen((curr) => !isOpen);
+function Question({ faq, number, curOpen, onSetCurOpen }) {
+  let isOpen = curOpen === number;
+
+  function isOpenBtn() {
+    onSetCurOpen(isOpen ? null : number);
   }
   return (
-    <li onClick={handleisOpen} className={isOpen ? "open item" : "item"}>
+    <li onClick={isOpenBtn} className={isOpen ? "open item" : "item"}>
       <p className="number">{number < 10 ? `0${number}` : number}</p>
       <p className="title text">{faq.title}</p>
       <p className="icon">{isOpen ? "-" : "+"}</p>
